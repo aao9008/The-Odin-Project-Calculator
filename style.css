@@ -72,6 +72,11 @@ body{
 
 }
 
+.button:disabled{
+    background-color: #a46969;
+    color: white;
+}
+
 .button:hover{
     background-color: #d88888;
     color: white;

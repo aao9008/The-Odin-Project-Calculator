@@ -1,10 +1,11 @@
-function operate(number1, number2){
-    // This function will call operation functions 
-}
 
-// Objects: This section contains the objects used in this program
+//////// Load required objects and listeners /////////////////
+const buttons = document.querySelector('.calculator-buttons');
+const screen = document.querySelector('.calculator-screen');
+const decimal = document.querySelector('.decimal');
 
-let operations = {
+ // Objects: This section contains the objects used in this program
+ let operations = {
     "addition" : function(a,b){return a + b},
     "subtraction" : function(a,b){return a - b},
     "multiplication" : function(a,b){return a * b},
@@ -12,20 +13,33 @@ let operations = {
 };
 
 // This Object will store the users input  values for processing
-let values = {
+const values = {
     "number 1" : undefined,
     "number 2" : undefined,
-    "operator" : undefined
+    "operator" : undefined,
 };
+/////////////////////////////////////////////////////////////////
 
-// Get the value of first number 
-const screen = document.querySelector('.calculator-screen');
-const buttons = document.querySelector('.calculator-buttons');
+operate();
+
+function operate(){    
+    // This function will call operation functions 
+    clearMemory();
+
+    undo();
+
+    getValue();
+
+    getOperator();
+
+    evaluate();
+}
 
 /* This function will get the value displayed on the calculator */
 function getValue(value){
 
-    if (values.operator === undefined){
+    // Initialize calculator screen to zero
+    if (values["number 1"] === undefined){
         screen.textContent = "0";
     }
 
@@ -34,37 +48,48 @@ function getValue(value){
 
     // This function will display numbers on  the screen
     function getNumberOnScreen(e){
+        
         // Check that button is a number or decimal point
         if (!e.target.classList.contains("operand"))
             return;
 
-        // Change default value from 0 to user  input
-        if (screen.textContent === "0"){
-            screen.textContent = e.target.value;
+        // This will clear the screen when entering first value of second number is being entered
+        if (parseFloat(screen.textContent) === values['number 1'] && values['operator'] !== undefined){
+            screen.textContent = "";
         }
+        
         // Append value to screen if there are less than 12 characters on the screen and this is not initial input
-        else if (screen.textContent.length < 11){
-            screen.append(e.target.value);
-
-            // Disable decimal after one press
-            if (e.target.value === "."){
-                e.target.disabled = true;
-            }
+        if (screen.textContent.length < 11 && values['operator'] === undefined){
+            let value = screen.textContent + e.target.value;
+            screen.textContent = parseFloat(value);
+            values['number 1'] = parseFloat(value);
         }
+
+        else if (screen.textContent.length < 11 && values['operator'] !== undefined){
+            value = screen.textContent + e.target.value;
+            screen.textContent = parseFloat(value);
+            values['number 2'] = parseFloat(value);
+        }
+
         else{
             // Don not add value to screen if screen is full
             return; 
         }
+
     }
 }
 
+/* This Function will start the calculation process */
+function getOperator(){
+    // Listen for the start of an operation
+    buttons.addEventListener('click', getOperatorValue);
 
-// Listen for the start of an operation
-buttons.addEventListener('click', getOperator);
-
-function getOperator(e){
-    if (e.target.classList.contains("operator")){
-        values["operator"] = e.target.value;
+    function getOperatorValue(e){
+        if (e.target.classList.contains("operator")){
+            values["operator"] = e.target.value;
+            values["new value"] = true;
+            console.log(values["operator"]);
+        }
     }
 }
 
@@ -76,13 +101,20 @@ function clearMemory(){
 
     // This function will clear the calculator 
     function clear(e){
-    if (e.target.classList.contains('clear'))
-        getValue();
-    }
+        if (e.target.classList.contains('clear')){
+        
+            //Reset the calculator screen
+            screen.textContent = 0;
 
-    
+            // Iterate over the values object and reset them all to undefined.
+            for (const property in values){
+                values[property] = undefined;
+            }
+        }
+    }
 }
 
+/* This function will remove the last character on screen */
 function undo(){
 
     // Listen for the delete button
@@ -91,13 +123,37 @@ function undo(){
     // This function will remove the last number on the calc screen
     function del(e){
         if (e.target.classList.contains("delete")){
-           screen.textContent= screen.textContent.slice(0,-1);
+            if (screen.textContent != "0"){
+                screen.textContent= screen.textContent.slice(0,-1);
+            }
+
+            if (screen.textContent.length === 0){
+                screen.textContent = 0;
+            }
+           
         }
     }
 
 }
 
+/* This function evaluates the expression */
+function evaluate(){
 
-getValue();
-clearMemory();
-undo();
+    buttons.addEventListener("click", getResults);
+
+    function getResults(e){
+        // Calculate results if both values have been acquired and user hit equals or another operator button
+        if (e.target.classList.contains('evaluate') || e.target.classList.contains('operator') && values[number2] !== undefined){
+            let operator = values['operator'];
+            let number1 = values['number 1'];
+            let number2 = values['number 2'];
+
+            let result = Math.round(operations[operator](number1,number2)).toFixed(3);
+
+            screen.textContent = result;
+
+            values['number 1'] = result;
+            values['number 2'] = undefined;
+        }
+    }
+}

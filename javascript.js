@@ -143,7 +143,7 @@ function evaluate(){
 
     function getResults(e){
         // Calculate results if both values have been acquired and user hit equals or another operator button
-        if (e.target.classList.contains('evaluate') || e.target.classList.contains('operator') && values[number2] !== undefined){
+        if (e.target.classList.contains('evaluate') || e.target.classList.contains('operator') && values['number 2'] !== undefined){
             let operator = values['operator'];
             let number1 = values['number 1'];
             let number2 = values['number 2'];

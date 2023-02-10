@@ -33,6 +33,7 @@ function operate(){
     getOperator();
 
     evaluate();
+
 }
 
 /* This function will get the value displayed on the calculator */
@@ -70,12 +71,6 @@ function getValue(value){
             screen.textContent = parseFloat(value);
             values['number 2'] = parseFloat(value);
         }
-
-        else{
-            // Don not add value to screen if screen is full
-            return; 
-        }
-
     }
 }
 
@@ -143,12 +138,38 @@ function evaluate(){
 
     function getResults(e){
         // Calculate results if both values have been acquired and user hit equals or another operator button
-        if (e.target.classList.contains('evaluate') || e.target.classList.contains('operator') && values['number 2'] !== undefined){
+        if (e.target.classList.contains("evaluate") && values['number 2'] === undefined){
+            if (parseFloat(screen.textContent) === 8008132|| parseFloat(screen.textContent) === 800813){
+                console.log('fuck');
+                screen.textContent = "BOOBIES"
+                return;
+            }
+        }
+        
+        else if (e.target.classList.contains('evaluate') || e.target.classList.contains('operator') && values['number 2'] !== undefined){
             let operator = values['operator'];
             let number1 = values['number 1'];
             let number2 = values['number 2'];
 
+            if (number2 === 0 && operator === "division"){
+                screen.textContent = "LMFAO";
+                return;
+            }
+
+            // Round decimal number to 3 decimal places
             let result = Math.round(operations[operator](number1,number2)).toFixed(3);
+
+            // Parse one more time to remove any trailing zeros.
+            result = parseFloat(result);
+
+            if (result.toString.length > 11){
+                screen.textContent = 'Error';
+            }
+
+            if (result === 8008132 || result === 800813){
+                screen.textContent = "BOOBIES";
+                return;
+            }
 
             screen.textContent = result;
 
@@ -157,3 +178,4 @@ function evaluate(){
         }
     }
 }
+

@@ -4,8 +4,9 @@
 
 body{
     display: flex;
+    flex: none;
     height: 100vh;
-    background-color: #54868d;
+    background-color: #2d3436;
 }
 
 .calculator-container{
@@ -13,18 +14,25 @@ body{
     grid-template-rows: repeat(6, 1fr);
 
     height: 650px;
-    width: 400px;
+    width: 420px;
+    max-width: 420px;
     border-radius: 10px;
+    border-color: #0984e3;
+    border-style: outset;
+    border-width: 8px;
 
-    background-color: peachpuff;
+    background-color: #dfe6e9;
     margin: auto; /* centers the calculator container */
     padding: 12px;
+
+    box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.5);
 }
 
 .calculator-screen{
     grid-row: 1;
 
     display: flex;
+    flex: none;
 
     align-items: flex-end;
     justify-content: flex-end;
@@ -33,12 +41,14 @@ body{
     letter-spacing: 8px;
     color: white;
 
-    background-color:#d88888;
+    background-color: #0984e3;
     border-radius: 10px;
 
     height: 125px;
     max-width: 100%;
     padding: 10px;
+
+    box-shadow: 0px 15px 1px -4px #74b9ff, 0px 25px 1px -6px #b3d5f8;
 
 }
 
@@ -64,21 +74,16 @@ body{
     color: #342E37;
     
     border-style: solid;
-    border-color: #d88888;
-    border-width: 2px;
+    border-color: #0984e3;
+    border-width: 3px;
 
     transition: 0.7ms ease-in;
 
 
 }
 
-.button:disabled{
-    background-color: #a46969;
-    color: white;
-}
-
 .button:hover{
-    background-color: #d88888;
+    background-color: #0984e3;
     color: white;
     cursor: pointer;
 
@@ -86,6 +91,12 @@ body{
 
 .button:active{
     transform: scale(0.90);
+}
+
+.clear, .delete, .operator, .percent,
+.evaluate{
+    background-color: #74b9ff;
+    color: white;
 }
 
 

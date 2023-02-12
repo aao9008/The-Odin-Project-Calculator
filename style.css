@@ -51,7 +51,7 @@ body{
     width: 90%;
     height: 90%;
 
-    gap: 10px;
+    gap: 8px;
     padding: 8px;
     margin: auto; /* Centers buttons in calculator container */
 }
@@ -59,7 +59,7 @@ body{
 /* Styling for Calculator buttons */
 
 .button{
-    border-radius: 100%;
+    border-radius: 10%;
     font-size: 24px;
     color: #342E37;
     
@@ -85,10 +85,7 @@ body{
 }
 
 .button:active{
-    resize: 0.90;
+    transform: scale(0.90);
 }
 
-.evaluate{
-    grid-column: span 2;
-    border-radius: 15px;
-}
+
